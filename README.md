@@ -1,10 +1,13 @@
 # HSLU-Borad-Erweiterungen
+
 ## Erweiterungen für das Board aus PRG_G
 
+
 ## Table of contents
-* [Über die Erweiterungen](#Über die Erweiterungen)
-* [Installation der Files komplett](#Installation der Files komplett)
-* [Installation Ergänzungen](#Installation Ergänzungen)
+* Über die Erweiterungen
+* Installation der Files komplett
+* Installation Ergänzungen
+
 
 ### Über die Erweiterungen
 
@@ -12,9 +15,11 @@ Ich habe alle diese Erweiterungen selber geschrieben und würde diese gerne mit 
 
 Aus Urheberrechtsgründen habe ich keine Dateien hochgeladen die ich nicht komplett selber geschrieben habe.
 
+
 ### Installation der Files komplett
 
 Die Dateien können einfach in den "board" Ordner gelegt werden und in der Hauptdatei mit #include "NameDerErweiterung.h" eingebunden werden.
+
 
 ### Installation Ergänzungen
 
