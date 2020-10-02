@@ -4,9 +4,14 @@
 
 
 ## Table of contents
+* Navigation
 * Über die Erweiterungen
 * Installation der Files komplett
 * Installation Ergänzungen
+
+### Navigation
+
+Die zusammengehörigen Dateien haben jeweils einen eigenen branch, dass heisst sie werden auf dem main branch nicht angezeigt. der branch kann oben links gewechselt werden. ein button der mit main beschrieben ist zeigt bei klicken alle branches an.
 
 
 ### Über die Erweiterungen
