@@ -7,7 +7,6 @@
 * Navigation
 * Über die Erweiterungen
 * Installation der Files komplett
-* Installation Ergänzungen
 
 ### Navigation
 
@@ -24,8 +23,3 @@ Aus Urheberrechtsgründen habe ich keine Dateien hochgeladen die ich nicht kompl
 ### Installation der Files komplett
 
 Die Dateien können einfach in den "board" Ordner gelegt werden und in der Hauptdatei mit #include "NameDerErweiterung.h" eingebunden werden.
-
-
-### Installation Ergänzungen
-
-Manche Dateien müssen nur erweitert werden. Es macht sinn die einzelnen Funktionen und Deklarationen in den passenden Files unter zu bringen. Solche Dateien sind gleich benannt wie solche, die schon im "board" Order sind. Hier kann einfach der Code in die bestehende Datei Kopiert werden. Ich empfehle die Dateinen zu oberst in die Datei zu kopieren und sie etwas vom Standartcode ab zu grenzen.
