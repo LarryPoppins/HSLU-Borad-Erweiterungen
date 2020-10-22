@@ -4,18 +4,16 @@
  *  Created on: 1 October
  *      Author: Larry Poppins
  *
- *      So, here we have an absolute monstrosity that looks like a piece of ass but it gets the job done.
- *      most of the times at least. you got the enums, the typedefs, some cheeky pre-processor commands and much more.
- *      What can it do? It does music quite well. this puppy has it all: An Init that you need to run with a Maximum volume and a BPM
- *      (just enter 0 if you don't know what you are doing). PlayNote makes the Board... well... play a note.
- *      Give it a frequency a Waveform of your choice, as long as your choice is sine, Square, triangle or sawtooth and a duration for the note.
- *      Alternatively, you can use PlayNoteBpm and enter the beats minute to set the note's length with a fraction as you are used to from music.
- *      these are probably not to accurate but hey, its better than calculating all the bloody values in milliseconds yourself.
- *      I think there's more, but I can't be arsed making a comment that no one is gonna read even longer so go read the code, lazyass.
+ *      Version 1.1:
+ *      * I've added some more Note Values which allows to set the Octave without the ugly A/2.
+ *      I've just put it all in from C2 all the way to B4, you're welcome to try it out, but I reckon at some point
+ *      the driver is just going to shit itself and produce no sound what so ever.
  *
- *      might add more notes to the enum so you don't have to use the ugly A/2. not that that adds much to the problem...
- *      also might do a resolution control option for the Wavetables, cause at the moment, minimal fucking difference is heard
- *      between the waveforms, compared to the effort i put in.
+ *      * Fixed the PlayNoteSquare() function. It doesn't just toot it's horn for infinity, but actually
+ *      listens to when you tell it to shut up.
+ *
+ *      Version 1.0:
+ *      * created the damn thing. took me a while but now it's running. (sorta)
  */
 
 //ideas:
@@ -32,19 +30,19 @@
 #endif
 
 //variables
-int sineTable[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-int triangleTable[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-int sawtoothTable[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-int squareTable[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+static int sineTable[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+static int triangleTable[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+static int sawtoothTable[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+static int squareTable[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
-int maxVol;
-int secondsPerBeat;
-int BPM;
+static int maxVol;
+static int secondsPerBeat;
+static bool displayNotes;
 
 /**
- * takes the maximum volume to generate Wavetables
+ * takes the maximum volume to generate Wavetables, BPM to set BPM for notes
  */
-void InitSound(int maxVolume, int BPM) {
+void InitSound(int maxVolume, int BPM) { //, bool displayNotesv
 
 	if (maxVolume > 4095) {
 		maxVolume = 4095;
@@ -62,9 +60,7 @@ void InitSound(int maxVolume, int BPM) {
 		BPM = 300;
 	}
 
-	else if (BPM < 30) {
-
-	}
+	else if (BPM < 30) {}
 
 	secondsPerBeat = 60 / BPM;
 	maxVol = maxVolume;
@@ -130,9 +126,8 @@ void PlayNoteSquare(int hertz, int time_ms) {
 			delay_us(noteTime_us);
 			DAC0_setValue(0);
 			delay_us(noteTime_us);
+			count += noteTime_us + TIME_LOOP_SQUARENOTE_US;
 		}
-
-		count += noteTime_us + TIME_LOOP_SQUARENOTE_US;
 	}
 
 	else {
@@ -144,9 +139,10 @@ void PlayNoteSquare(int hertz, int time_ms) {
 //sound generation
 /**
  * takes a Note, a waveform and a time for how long to play the sound
- * the notes are given from C to B in the 4th octave. anything above F# 5 or Gb 5 can't be generated
- * in any other wave than square. (the function will default to that wave if the others aren't possible.)
- * for lower octaves just divide the note e.g. A/2 gives A in the 3rd octave
+ * the notes are given from C to B in the 4th octave. anything above F# 5 or Gb 5 can't be generated, the chip will
+ * go commit die... in any other wave than square. (the function will default to that wave if the others aren't possible.)
+ * for lower octaves just divide the note e.g. A/2 gives A in the 3rd octave -> this ugly mess is now resolved
+ * add the Octave number right behind the Letter e.g. A3. If you forget the Note will default to the 4th octave.
  */
 void PlayNote(int hertz, waveForm waveForm, int time_ms) {
 
@@ -222,7 +218,8 @@ void PlayNote(int hertz, waveForm waveForm, int time_ms) {
 
 
 /**
- * allows noteduration to be specified in fractions with the provided beats per minutes in init
+ * allows noteduration to be specified in fractions with the provided beats per minutes in init.
+ * If your big boy brain can't quite handle that level of music, just punch in 0 and I'll handle the rest
  */
 void PlayNoteBPM(int hertz, waveForm waveForm, float fraction) {
 
